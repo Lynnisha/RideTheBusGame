@@ -48,12 +48,11 @@ public class Card extends JFrame{
     public Card(int value, String suit)  {
         this.value = value;
         this.suit = suit;
-        this.pic = pic;
     }
 
 
 
-
+    //deals one from the deck ID passed in
     public static Card dealOne(String id ){
         Card card = new Card(0,"");
         String json = "";
@@ -68,13 +67,14 @@ public class Card extends JFrame{
         JsonElement element = new JsonParser().parse(json);
         JsonObject object = element.getAsJsonObject();
 
+
+        //setting strings from json object and array
         String value = object.get("cards").getAsJsonArray().get(0).getAsJsonObject().get("value").getAsString();
         String suit = object.get("cards").getAsJsonArray().get(0).getAsJsonObject().get("suit").getAsString();
         String pic = object.get("cards").getAsJsonArray().get(0).getAsJsonObject().get("image").getAsString();
-        //String card = value + " of " + suit;
 
 
-        //String remaining = object.get("remaining").getAsString();
+        //setting string of face cards to their value
         if (value.equals("JACK")) {
             card.setValue(11);
         } else if (value.equals("QUEEN")) {
@@ -95,6 +95,8 @@ public class Card extends JFrame{
         return card;
 
     }
+
+    //shuffles the deck that comes from api and returns the ID of deck as String
     public String shuffleDeck() {
         String json = "";
         try {
@@ -186,9 +188,6 @@ public static void runGame(String userName){
     cardValue4 = ValueOfFace.toFace(card4.getValue());
     cardValue5 = ValueOfFace.toFace(card5.getValue());
 
-    //declares higher/lower variables
-    int higher = 1;
-    int lower = 2;
 
     // Create Scanner to take name.
     Scanner input = new Scanner(System.in);
@@ -210,27 +209,27 @@ public static void runGame(String userName){
         int keepPlaying2 = input.nextInt();
         if (keepPlaying2 == 2){
             System.out.println("OK " + userNameString + ", see you next time on the bus!" );
+            System.exit(0);
         }else {
         Card.runGame(userName);}
     }
 
 
     int guess2 = input.nextInt();
-    if (guess2 == 1 && card3.getSuit().equals("CLUBS") || guess2 == 1 && card3.getSuit().equals("SPADES")) {
+    if (guess2 == 1 && card3.getSuit().equals("CLUBS") || guess2 == 1 && card3.getSuit().equals("SPADES")
+    || guess2 == 2 && card3.getSuit().equals("HEARTS") || guess2 == 2 && card3.getSuit().equals("DIAMONDS")
+    ) {
         System.out.println("Correct!  Card #3 was " + cardValue3 + " of " + card3.getSuit() + ".  Is the next card higher(1) or lower(2)?");
         card3.displayCard(card3.getPic());
-    } else if (guess2 == 2 && card3.getSuit().equals("HEARTS") || guess2 == 2 && card3.getSuit().equals("DIAMONDS")) {
-        System.out.println("Correct!  Card #3 was " + cardValue3 + " of " + card3.getSuit() + ".  Is the next card higher(1) or lower(2)?");
-        card3.displayCard(card3.getPic());
-
-    } else {
+    }  else {
         System.out.println("Incorrect! Card #3 was " + cardValue3 + " of " + card3.getSuit() + ". Would you like to try again? Yes(1)! Nah, I'm good(2)!");
         int keepPlaying3 = input.nextInt();
         if (keepPlaying3 == 2){
             System.out.println("OK " + userNameString + ", see you next time on the bus!" );
+            System.exit(0);
         }else {
             Card.runGame(userName);
-    }
+    } }
     int guess3 = input.nextInt();
 
     if (guess3 == 1 && card4.getValue() > card3.getValue() ||
@@ -242,32 +241,33 @@ public static void runGame(String userName){
         int keepPlaying4 = input.nextInt();
         if (keepPlaying4 == 2){
             System.out.println("OK " + userNameString + ", see you next time on the bus!" );
+            System.exit(0);
         }else {
             Card.runGame(userName);}
     }
     int guess4 = input.nextInt();
-
-    if (guess4 == 1 && card5.getSuit().equals("CLUBS") || guess4 == 1 && card5.getSuit().equals("SPADES")) {
-        System.out.println("Correct!  Card #5 was " + cardValue5 + " of " + card5.getSuit() + ".  You've beaten the bus! Would you like to play again? Sure(1)! Retire a champ(2)!");
-        card5.displayCard(card5.getPic());
-    } else if (guess4 == 2 && card5.getSuit().equals("HEARTS") || guess4 == 2 && card5.getSuit().equals("DIAMONDS")) {
-        System.out.println("Correct!  Card #5 was " + cardValue5 + " of " + card5.getSuit() + ".  You've beaten the bus! Would you like to play again? Sure(1)! Retire a champ(2)!");
-        card5.displayCard(card5.getPic());
+    if (guess4 == 1 && card5.getSuit().equals("CLUBS") || guess4 == 1 && card5.getSuit().equals("SPADES")
+            || guess4 == 2 && card5.getSuit().equals("HEARTS") || guess4 == 2 && card5.getSuit().equals("DIAMONDS")
+    ) {
+        System.out.println("Correct!  Card #5 was " + cardValue5 + " of " + card5.getSuit() + ".  You beat the bus! Play again? Yes(1)! Nah, I'm good(2)!");
+        card3.displayCard(card3.getPic());
         int keepPlaying5 = input.nextInt();
         if (keepPlaying5 == 2){
             System.out.println("OK " + userNameString + ", see you next time on the bus!" );
+            System.exit(0);
         }else {
-            Card.runGame(userName);}
+            Card.runGame(userName);
+        }
 
-
-    } else {
-        System.out.println("Incorrect! Card #5 was " + cardValue5 + " of " + card5.getSuit() + ". So close!  Would you like to try again? Yes(1)! Nah, I'm good(2)!");
-        int playAgain = input.nextInt();
-        if(playAgain == 2){
+    }  else {
+        System.out.println("Incorrect! Card #5 was " + cardValue5 + " of " + card5.getSuit() + ". So close!!! Would you like to try again? Yes(1)! Nah, I'm good(2)!");
+        int keepPlaying5 = input.nextInt();
+        if (keepPlaying5 == 2){
             System.out.println("OK " + userNameString + ", see you next time on the bus!" );
-        }else{
-            Card.runGame(userName);}
-    }
+            System.exit(0);
+        }else {
+            Card.runGame(userName);
+        } }
     }
 }
-}
+
